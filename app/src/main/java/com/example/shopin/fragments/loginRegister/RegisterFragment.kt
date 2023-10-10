@@ -10,9 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.shopin.data.User
 import com.example.shopin.databinding.FragmentRegisterBinding
+import com.example.shopin.utils.RegisterValidation
 import com.example.shopin.utils.Resource
 import com.example.shopin.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class RegisterFragment: Fragment() {
@@ -59,6 +62,27 @@ class RegisterFragment: Fragment() {
                     is Resource.Error ->{
                         Log.e(TAG,it.message.toString())
                         binding.btnRegisterRegister.revertAnimation()
+                    }
+                    else ->Unit
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.validation.collect{validation ->
+                if(validation.email is RegisterValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.etEmailRegister.apply{
+                            requestFocus()
+                            error= validation.email .message
+                        }
+                    }
+                }
+                if(validation.password is RegisterValidation.Failed){
+                    withContext(Dispatchers.Main){
+                        binding.etPasswordRegister.apply{
+                            requestFocus()
+                            error= validation.password.message
+                        }
                     }
                 }
             }
