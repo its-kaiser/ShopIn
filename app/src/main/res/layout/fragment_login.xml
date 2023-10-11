@@ -88,13 +88,14 @@
             app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
             app:layout_constraintTop_toBottomOf="@id/etPasswordLogin" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btnLoginLogin"
             style="@style/blueButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/mediumButtonHeight"
             android:layout_marginTop="15dp"
             android:text="@string/login"
+            app:spinning_bar_color="@color/white"
             app:layout_constraintEnd_toEndOf="@id/guidelineLoginRight"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="@id/guidelineLoginLeft"
