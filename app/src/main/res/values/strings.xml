@@ -29,4 +29,8 @@
     <string name="add_to_cart">Add to cart</string>
     <string name="best_deals">Best deals</string>
     <string name="best_products">Best products</string>
+    <string name="scotch_premium">Scotch Premium</string>
+    <string name="_2000">$2000</string>
+    <string name="see_product">See product</string>
+    <string name="chair">Chair</string>
 </resources>
