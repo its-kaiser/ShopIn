@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivShadow"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="#B8D9FA"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivColor"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:src="@color/g_gray500"
+        app:layout_constraintStart_toStartOf="@id/ivShadow"
+        app:layout_constraintTop_toTopOf="@id/ivShadow"
+        app:layout_constraintEnd_toEndOf="@id/ivShadow"
+        app:layout_constraintBottom_toBottomOf="@id/ivShadow"/>
+
+    <TextView
+        android:id="@+id/tvSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_picked"
+        android:text="@string/s"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/ivColor"
+        app:layout_constraintTop_toTopOf="@id/ivColor"
+        app:layout_constraintEnd_toEndOf="@id/ivColor"
+        app:layout_constraintBottom_toBottomOf="@id/ivColor"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
