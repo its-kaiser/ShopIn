@@ -33,4 +33,7 @@
     <string name="_2000">$2000</string>
     <string name="see_product">See product</string>
     <string name="chair">Chair</string>
+    <string name="just_for_preview">Just for preview</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
 </resources>
