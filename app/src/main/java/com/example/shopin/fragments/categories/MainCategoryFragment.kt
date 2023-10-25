@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shopin.R
@@ -18,6 +19,7 @@ import com.example.shopin.adapters.BestProductAdapter
 import com.example.shopin.adapters.SpecialProductsAdapter
 import com.example.shopin.databinding.FragmentMainCategoryBinding
 import com.example.shopin.utils.Resource
+import com.example.shopin.utils.showBottomNavigatioView
 import com.example.shopin.viewmodel.MainCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -45,9 +47,25 @@ class MainCategoryFragment:Fragment(R.layout.fragment_main_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setupSpecialProductsRv()
         setupBestDealsRv()
         setupBestProductsRv()
+
+        specialProductsAdapter.onClick = {
+            val bund = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,bund)
+        }
+
+        bestProductAdapter.onClick = {
+            val bund = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,bund)
+        }
+
+        bestDealsAdapter.onClick = {
+            val bund = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment,bund)
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.specialProducts.collectLatest {
                 when(it){
@@ -113,6 +131,12 @@ class MainCategoryFragment:Fragment(R.layout.fragment_main_category) {
                     viewModel.fetchBestProducts()
                 }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        showBottomNavigatioView()
     }
 
     private fun setupBestProductsRv() {
