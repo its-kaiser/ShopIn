@@ -20,7 +20,7 @@ class CategoryViewModel constructor(
 
     private val _bestProducts = MutableStateFlow<Resource<List<Product>>>(Resource.Unspecified())
     val bestProducts = _bestProducts.asStateFlow()
-    
+
     init {
         fetchOfferProducts()
         fetchBestProducts()
@@ -45,21 +45,22 @@ class CategoryViewModel constructor(
     }
 
     fun fetchBestProducts(){
-        viewModelScope.launch {
-            _bestProducts.emit(Resource.Loading())
-        }
-        firestore.collection("Products")
-            .whereEqualTo("category",category.category)
-            .whereEqualTo("offerPercentage",null).get()
-            .addOnSuccessListener {
-                val products = it.toObjects(Product::class.java)
-                viewModelScope.launch {
-                    _bestProducts.emit(Resource.Success(products))
-                }
-            }.addOnFailureListener{
-                viewModelScope.launch {
-                    _bestProducts.emit(Resource.Error(it.message.toString()))
-                }
+
+            viewModelScope.launch {
+                _bestProducts.emit(Resource.Loading())
             }
+            firestore.collection("Products")
+                .whereEqualTo("category", category.category)
+                .whereEqualTo("offerPercentage", null).get()
+                .addOnSuccessListener {
+                    val products = it.toObjects(Product::class.java)
+                    viewModelScope.launch {
+                        _bestProducts.emit(Resource.Success(products))
+                    }
+                }.addOnFailureListener {
+                    viewModelScope.launch {
+                        _bestProducts.emit(Resource.Error(it.message.toString()))
+                    }
+                }
     }
 }
