@@ -186,7 +186,7 @@ class MainCategoryFragment:Fragment(R.layout.fragment_main_category) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if(!recyclerView.canScrollVertically(1) && dx!=0){
+                if(!recyclerView.canScrollHorizontally(1) && dx!=0){
                     viewModel.fetchSpecialProducts()
                 }
             }

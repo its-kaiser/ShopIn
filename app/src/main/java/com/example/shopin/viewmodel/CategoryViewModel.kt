@@ -21,46 +21,60 @@ class CategoryViewModel constructor(
     private val _bestProducts = MutableStateFlow<Resource<List<Product>>>(Resource.Unspecified())
     val bestProducts = _bestProducts.asStateFlow()
 
+    private val pagingGridInfo =PagingGridInfo()
+    private val pagingLinearInfo =PagingLinearInfo()
     init {
         fetchOfferProducts()
         fetchBestProducts()
     }
     fun fetchOfferProducts(){
-        viewModelScope.launch {
-            _offerProducts.emit(Resource.Loading())
-        }
-        firestore.collection("Products")
-            .whereEqualTo("category",category.category)
-            .whereNotEqualTo("offerPercentage",null).get()
-            .addOnSuccessListener {
-                val products = it.toObjects(Product::class.java)
-                viewModelScope.launch {
-                    _offerProducts.emit(Resource.Success(products))
-                }
-            }.addOnFailureListener{
-                viewModelScope.launch {
-                    _offerProducts.emit(Resource.Error(it.message.toString()))
-                }
+        if(!pagingLinearInfo.isPagingEnd) {
+            viewModelScope.launch {
+                _offerProducts.emit(Resource.Loading())
             }
+            firestore.collection("Products")
+                .whereEqualTo("category", category.category)
+                .whereNotEqualTo("offerPercentage", null)
+                .limit(pagingLinearInfo.page*5).get()
+                .addOnSuccessListener {
+                    val products = it.toObjects(Product::class.java)
+                    pagingLinearInfo.isPagingEnd = pagingLinearInfo.oldProducts==products
+                    pagingLinearInfo.oldProducts=products
+                    viewModelScope.launch {
+                        _offerProducts.emit(Resource.Success(products))
+                    }
+                    pagingLinearInfo.page++
+                }.addOnFailureListener {
+                    viewModelScope.launch {
+                        _offerProducts.emit(Resource.Error(it.message.toString()))
+                    }
+                }
+        }
     }
 
     fun fetchBestProducts(){
+        if(!pagingGridInfo.isPagingEnd) {
 
             viewModelScope.launch {
                 _bestProducts.emit(Resource.Loading())
             }
             firestore.collection("Products")
                 .whereEqualTo("category", category.category)
-                .whereEqualTo("offerPercentage", null).get()
+                .whereEqualTo("offerPercentage", null)
+                .limit(pagingGridInfo.bestProductPage*10).get()
                 .addOnSuccessListener {
                     val products = it.toObjects(Product::class.java)
+                    pagingGridInfo.isPagingEnd= pagingGridInfo.oldBestProducts==products
+                    pagingGridInfo.oldBestProducts= products
                     viewModelScope.launch {
                         _bestProducts.emit(Resource.Success(products))
                     }
+                    pagingGridInfo.bestProductPage++
                 }.addOnFailureListener {
                     viewModelScope.launch {
                         _bestProducts.emit(Resource.Error(it.message.toString()))
                     }
                 }
+        }
     }
 }
