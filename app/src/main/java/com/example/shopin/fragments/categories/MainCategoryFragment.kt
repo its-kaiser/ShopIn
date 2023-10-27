@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shopin.R
 import com.example.shopin.adapters.BestDealsAdapter
 import com.example.shopin.adapters.BestProductAdapter
@@ -125,13 +126,12 @@ class MainCategoryFragment:Fragment(R.layout.fragment_main_category) {
                 }
             }
         }
-        binding.nestedScrollMainCategory
-            .setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{v,_,scrollY,_,_->
-                if(v.getChildAt(0).bottom<=v.height+scrollY){
-                    viewModel.fetchBestProducts()
-                }
-        })
+        bestProductsPaging()
+        bestDealsPaging()
+        specialProductsPaging()
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -170,4 +170,40 @@ class MainCategoryFragment:Fragment(R.layout.fragment_main_category) {
             adapter=specialProductsAdapter
         }
     }
+
+    private fun bestProductsPaging(){
+        binding.nestedScrollMainCategory
+            .setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{ v, _, scrollY, _, _->
+                if(v.getChildAt(0).bottom<=v.height+scrollY){
+                    viewModel.fetchBestProducts()
+                }
+            })
+    }
+
+    private fun specialProductsPaging() {
+
+        binding.rvSpecialProducts.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if(!recyclerView.canScrollVertically(1) && dx!=0){
+                    viewModel.fetchSpecialProducts()
+                }
+            }
+        })
+    }
+    private fun bestDealsPaging() {
+
+        binding.rvBestDealsProducts.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if(!recyclerView.canScrollHorizontally(1) && dx!=0){
+                    viewModel.fetchBestDeals()
+                }
+            }
+        })
+    }
+
 }
