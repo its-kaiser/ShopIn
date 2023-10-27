@@ -2,8 +2,10 @@ package com.example.shopin.di
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
+import com.example.shopin.firebase.ExtractCommonInfo
 import com.example.shopin.utils.Constants.INTRODUCTION_SP
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -27,4 +29,11 @@ object AppModule {
     fun provideIntroductionSP(
         application: Application
     ) = application.getSharedPreferences(INTRODUCTION_SP, MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideExtractCommonInfo(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    )=ExtractCommonInfo(firestore,firebaseAuth)
 }
