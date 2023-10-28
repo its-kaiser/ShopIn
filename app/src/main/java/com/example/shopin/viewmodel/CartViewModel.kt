@@ -10,7 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -26,6 +28,8 @@ class CartViewModel @Inject constructor(
     private val _cartProducts  = MutableStateFlow<Resource<List<Cart>>>(Resource.Unspecified())
     val cartProducts = _cartProducts.asStateFlow()
 
+    private val _deleteDialog = MutableSharedFlow<Cart>()
+    val deleteDialog = _deleteDialog.asSharedFlow()
 
     val productPrice = cartProducts.map {
         when(it){
@@ -92,6 +96,12 @@ class CartViewModel @Inject constructor(
                     increaseQuantity(documentId)
                 }
                 ExtractCommonInfo.QuantityChanging.DECREASE->{
+                    if(cart.quantity==1){
+                       viewModelScope.launch {
+                           _deleteDialog.emit(cart)
+                       }
+                        return
+                    }
                     viewModelScope.launch {
                         _cartProducts.emit(Resource.Loading())
                     }
@@ -120,6 +130,15 @@ class CartViewModel @Inject constructor(
                 }
             }
 
+        }
+    }
+
+    fun deleteCartProduct(cart: Cart){
+        val index = cartProducts.value.data?.indexOf(cart)
+        if(index!=null && index!=-1) {
+            val documentId = cartProductDocuments[index].id
+            firestore.collection("user").document(fbAuth.uid!!).collection("cart")
+                .document(documentId).delete()
         }
     }
 }

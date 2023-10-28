@@ -1,5 +1,6 @@
 package com.example.shopin.fragments.shopping
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -86,6 +87,24 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
 
         cartAdapter.onMinusClick ={
             viewModel.changeQuantity(it, ExtractCommonInfo.QuantityChanging.DECREASE)
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.deleteDialog.collectLatest {
+                val alertDialog = AlertDialog.Builder(requireContext()).apply {
+                    setTitle("Delete item")
+                    setMessage("Do you want to delete this item from your cart?")
+                    setNegativeButton("Cancel"){dialog,_->
+                        dialog.dismiss()
+                    }
+                    setPositiveButton("Yes"){dialog,_->
+                        viewModel.deleteCartProduct(it)
+                        dialog.dismiss()
+                    }
+                }
+                alertDialog.create()
+                alertDialog.show()
+            }
         }
     }
 
