@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shopin.R
 import com.example.shopin.adapters.CartProductsAdapter
 import com.example.shopin.databinding.FragmentCartBinding
+import com.example.shopin.firebase.ExtractCommonInfo
 import com.example.shopin.utils.Resource
 import com.example.shopin.utils.VerticalItemDecoration
 import com.example.shopin.viewmodel.CartViewModel
@@ -77,6 +78,14 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
         cartAdapter.onProductClick ={
             val bundle = Bundle().apply { putParcelable("product",it.product) }
             findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment,bundle)
+        }
+
+        cartAdapter.onPlusClick ={
+            viewModel.changeQuantity(it, ExtractCommonInfo.QuantityChanging.INCREASE)
+        }
+
+        cartAdapter.onMinusClick ={
+            viewModel.changeQuantity(it, ExtractCommonInfo.QuantityChanging.DECREASE)
         }
     }
 

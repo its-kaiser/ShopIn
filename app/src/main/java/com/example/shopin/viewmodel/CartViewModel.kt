@@ -86,9 +86,15 @@ class CartViewModel @Inject constructor(
 
             when(quantityChanging){
                 ExtractCommonInfo.QuantityChanging.INCREASE->{
+                    viewModelScope.launch {
+                        _cartProducts.emit(Resource.Loading())
+                    }
                     increaseQuantity(documentId)
                 }
                 ExtractCommonInfo.QuantityChanging.DECREASE->{
+                    viewModelScope.launch {
+                        _cartProducts.emit(Resource.Loading())
+                    }
                     decreaseQuantity(documentId)
                 }
             }
