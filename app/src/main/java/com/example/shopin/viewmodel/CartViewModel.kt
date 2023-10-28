@@ -57,5 +57,45 @@ class CartViewModel @Inject constructor(
     ){
 
         val index = cartProducts.value.data?.indexOf(cart)
+
+        /*
+         *index could be equal to -1 if the function [getCartProducts] delays which will also
+         * delay the result which we expect to be inside the [_cartProducts] and to
+         *  prevent the app from crashing we make a check
+         */
+        if(index!=null && index!=-1) {
+            val documentId = cartProductDocuments[index].id
+
+            when(quantityChanging){
+                ExtractCommonInfo.QuantityChanging.INCREASE->{
+                    increaseQuantity(documentId)
+                }
+                ExtractCommonInfo.QuantityChanging.DECREASE->{
+                    decreaseQuantity(documentId)
+                }
+            }
+        }
+    }
+
+    private fun decreaseQuantity(documentId: String) {
+        fbCommon.decreaseQuantity(documentId){res, e->
+            if(e!=null){
+                viewModelScope.launch {
+                    _cartProducts.emit(Resource.Error(e.message.toString()))
+                }
+            }
+
+        }
+    }
+
+    private fun increaseQuantity(documentId: String) {
+        fbCommon.increaseQuantity(documentId){res, e->
+            if(e!=null){
+                viewModelScope.launch {
+                    _cartProducts.emit(Resource.Error(e.message.toString()))
+                }
+            }
+
+        }
     }
 }
