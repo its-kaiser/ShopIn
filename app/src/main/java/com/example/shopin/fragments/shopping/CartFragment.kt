@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shopin.R
 import com.example.shopin.adapters.CartProductsAdapter
@@ -44,6 +45,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
                 }
             }
         }
+
         lifecycleScope.launchWhenStarted {
             viewModel.cartProducts.collectLatest {
                 when(it){
@@ -70,6 +72,11 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
                     else->Unit
                 }
             }
+        }
+
+        cartAdapter.onProductClick ={
+            val bundle = Bundle().apply { putParcelable("product",it.product) }
+            findNavController().navigate(R.id.action_cartFragment_to_productDetailsFragment,bundle)
         }
     }
 
