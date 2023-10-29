@@ -51,4 +51,9 @@
     <string name="phone">Phone</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="billing">Billing</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="shopin_does_not_support_virtual_payments_you_can_pay_when_you_receive_your_order">ShopIn does not support virtual payments. You can pay when you receive your order.</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="place_order">Place Order</string>
 </resources>
