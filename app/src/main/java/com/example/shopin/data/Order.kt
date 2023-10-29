@@ -1,4 +1,8 @@
 package com.example.shopin.data
 
-class Order {
-}
+data class Order (
+    val orderStatus: String,
+    val totalPrice: Float,
+    val products: List<Cart>,
+    val address: Address
+)
