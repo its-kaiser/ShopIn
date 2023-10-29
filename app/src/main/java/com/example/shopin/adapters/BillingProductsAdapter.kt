@@ -1,5 +1,7 @@
 package com.example.shopin.adapters
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.shopin.data.Cart
 import com.example.shopin.databinding.BillingProductsRvItemBinding
+import com.example.shopin.helper.getProductPrice
 
 class BillingProductsAdapter:Adapter<BillingProductsAdapter.BillingProductsViewHolder>(){
 
@@ -18,6 +21,14 @@ class BillingProductsAdapter:Adapter<BillingProductsAdapter.BillingProductsViewH
                 Glide.with(itemView).load(billingProduct.product.images[0]).into(ivBillingCartProduct)
                 tvProductCartName.text = billingProduct.product.name
                 tvBillingProductQuantity.text = billingProduct.quantity.toString()
+
+                val priceAfterOffer = billingProduct.product.offerPercentage.getProductPrice(billingProduct.product.price)
+                tvProductCartPrice.text = String.format("%.2f",priceAfterOffer)
+
+                ivBillingCartProductColor.setImageDrawable(ColorDrawable(billingProduct.selectedColor?: Color.TRANSPARENT))
+                tvCartProductSize.text = billingProduct.selectedSize?:"".also { ivBillingCartProductSize.setImageDrawable(
+                    ColorDrawable(Color.TRANSPARENT)
+                ) }
             }
         }
 
