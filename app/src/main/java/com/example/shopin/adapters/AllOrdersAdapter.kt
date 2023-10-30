@@ -75,6 +75,10 @@ class AllOrdersAdapter:Adapter<AllOrdersAdapter.OrdersViewHolder> (){
         val order = differ.currentList[position]
         
         holder.bind(order)
+
+        holder.itemView.setOnClickListener {
+            onClick?.invoke(order)
+        }
     }
 
     var onClick :((Order)->Unit)? =null

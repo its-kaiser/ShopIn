@@ -22,6 +22,9 @@ class AllOrdersViewModel @Inject constructor(
     val allOrders = _allOrders.asStateFlow()
 
 
+    init {
+        fetchAllOrders()
+    }
     fun fetchAllOrders(){
         viewModelScope.launch {
             _allOrders.emit(Resource.Loading())
