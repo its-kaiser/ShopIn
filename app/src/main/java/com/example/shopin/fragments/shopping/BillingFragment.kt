@@ -17,8 +17,8 @@ import com.example.shopin.adapters.AddressAdapter
 import com.example.shopin.adapters.BillingProductsAdapter
 import com.example.shopin.data.Address
 import com.example.shopin.data.Cart
-import com.example.shopin.data.Order
-import com.example.shopin.data.OrderStatus
+import com.example.shopin.data.order.Order
+import com.example.shopin.data.order.OrderStatus
 import com.example.shopin.databinding.FragmentBillingBinding
 import com.example.shopin.utils.HorizontalItemDecoration
 import com.example.shopin.utils.Resource

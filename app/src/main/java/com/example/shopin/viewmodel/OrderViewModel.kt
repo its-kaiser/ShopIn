@@ -2,7 +2,7 @@ package com.example.shopin.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shopin.data.Order
+import com.example.shopin.data.order.Order
 import com.example.shopin.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,7 +21,7 @@ class OrderViewModel @Inject constructor(
     val order = _order.asStateFlow()
 
 
-    fun placeOrder(order:Order){
+    fun placeOrder(order: Order){
         viewModelScope.launch {
             _order.emit(Resource.Loading())
         }
