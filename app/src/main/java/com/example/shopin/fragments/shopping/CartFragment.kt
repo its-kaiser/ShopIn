@@ -110,7 +110,7 @@ class CartFragment: Fragment(R.layout.fragment_cart) {
         }
 
         binding.btnCheckout.setOnClickListener {
-            val action = CartFragmentDirections.actionCartFragmentToBillingFragment(totalPrice,cartAdapter.differ.currentList.toTypedArray())
+            val action = CartFragmentDirections.actionCartFragmentToBillingFragment(totalPrice,cartAdapter.differ.currentList.toTypedArray(),true)
             findNavController().navigate(action)
         }
     }

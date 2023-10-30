@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.shopin.data.Address
 import com.example.shopin.databinding.FragmentAddressBinding
 import com.example.shopin.utils.Resource
@@ -21,6 +22,8 @@ class AddressFragment:Fragment() {
 
     private lateinit var binding: FragmentAddressBinding
     val viewModel by viewModels<AddressViewModel>()
+    val args by navArgs<AddressFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,6 +35,22 @@ class AddressFragment:Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val address= args.address
+
+        if(address==null){
+            binding.btnDelete.visibility = View.GONE
+        }
+        else{
+            binding.apply {
+                edAddressTitle.setText(address.addressTitle)
+                edCity.setText(address.city)
+                edPhone.setText(address.phoneNumber)
+                edState.setText(address.state)
+                edFullName.setText(address.fullName)
+                edStreet.setText(address.street)
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.addNewAddress.collectLatest {

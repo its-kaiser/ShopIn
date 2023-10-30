@@ -47,7 +47,7 @@ class ProfileFragment:Fragment(R.layout.fragment_profile) {
 
         binding.linearBilling.setOnClickListener {
             val action = ProfileFragmentDirections.actionProfileFragmentToBillingFragment(0f,
-                emptyArray())
+                emptyArray(),false)
 
             findNavController().navigate(action)
         }
