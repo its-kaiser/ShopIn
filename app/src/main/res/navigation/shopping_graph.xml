@@ -82,5 +82,17 @@
         android:id="@+id/ordersFragment"
         android:name="com.example.shopin.fragments.settings.AllOrdersFragment"
         android:label="OrdersFragment"
-        tools:layout="@layout/fragment_all_orders"/>
+        tools:layout="@layout/fragment_all_orders">
+        <action
+            android:id="@+id/action_ordersFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.shopin.fragments.settings.OrderDetailFragment"
+        android:label="OrderDetailFragment" >
+        <argument
+            android:name="order"
+            app:argType="com.example.shopin.data.order.Order" />
+    </fragment>
 </navigation>
