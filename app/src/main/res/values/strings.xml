@@ -60,4 +60,6 @@
     <string name="forgot_change_password">Forgot/Change password</string>
     <string name="all_orders">All orders</string>
     <string name="no_orders_to_show">No orders to show</string>
+    <string name="_1234567">#1234567</string>
+    <string name="products">Products</string>
 </resources>
